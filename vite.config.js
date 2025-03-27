@@ -10,16 +10,26 @@ import remarkMdxFrontmatter from 'remark-mdx-frontmatter';
 import rehypeImgSize from 'rehype-img-size';
 import rehypeSlug from 'rehype-slug';
 import rehypePrism from '@mapbox/rehype-prism';
+import fs from 'fs';
+import path from 'path';
 
-// Custom plugin to handle GLSL files
+// Custom plugin to handle GLSL files with ?raw query
 const glslPlugin = {
   name: 'vite-plugin-glsl',
-  transform(code, id) {
-    if (id.endsWith('.glsl')) {
-      return {
-        code: `export default ${JSON.stringify(code)};`,
-        map: null
-      };
+  resolveId(source, importer) {
+    if (source.endsWith('.glsl?raw')) {
+      // Remove the ?raw suffix for resolution
+      const realSource = source.replace(/\?raw$/, '');
+      const resolved = path.resolve(path.dirname(importer), realSource);
+      return resolved + '?raw';
+    }
+  },
+  load(id) {
+    if (id.endsWith('.glsl?raw')) {
+      // Remove the ?raw suffix for loading
+      const realId = id.replace(/\?raw$/, '');
+      const code = fs.readFileSync(realId, 'utf-8');
+      return `export default ${JSON.stringify(code)};`;
     }
   }
 };
