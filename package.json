@@ -58,6 +58,7 @@
     "prop-types": "^15.8.1",
     "remark-frontmatter": "^5.0.0",
     "remark-mdx-frontmatter": "^4.0.0",
+    "remix": "^2.16.2",
     "storybook": "^7.6.17",
     "vite": "^5.1.0",
     "vite-jsconfig-paths": "^2.0.1",
