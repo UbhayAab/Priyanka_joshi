@@ -11,6 +11,19 @@ import rehypeImgSize from 'rehype-img-size';
 import rehypeSlug from 'rehype-slug';
 import rehypePrism from '@mapbox/rehype-prism';
 
+// Custom plugin to handle GLSL files
+const glslPlugin = {
+  name: 'vite-plugin-glsl',
+  transform(code, id) {
+    if (id.endsWith('.glsl')) {
+      return {
+        code: `export default ${JSON.stringify(code)};`,
+        map: null
+      };
+    }
+  }
+};
+
 export default defineConfig({
   assetsInclude: ['**/*.glb', '**/*.hdr', '**/*.glsl'],
   build: {
@@ -20,6 +33,7 @@ export default defineConfig({
     port: 7777,
   },
   plugins: [
+    glslPlugin,
     mdx({
       rehypePlugins: [[rehypeImgSize, { dir: 'public' }], rehypeSlug, rehypePrism],
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
