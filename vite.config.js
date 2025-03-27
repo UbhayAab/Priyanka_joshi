@@ -20,17 +20,6 @@ export default defineConfig({
     port: 7777,
   },
   plugins: [
-    {
-      name: 'vite-plugin-glsl',
-      transform(code, id) {
-        if (/\.glsl(\?raw)?$/.test(id)) {
-          return {
-            code: `export default ${JSON.stringify(code)};`,
-            map: null
-          };
-        }
-      }
-    },
     mdx({
       rehypePlugins: [[rehypeImgSize, { dir: 'public' }], rehypeSlug, rehypePrism],
       remarkPlugins: [remarkFrontmatter, remarkMdxFrontmatter],
