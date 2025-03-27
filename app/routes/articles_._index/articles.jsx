@@ -138,6 +138,8 @@ export function Articles() {
   const { width } = useWindowSize();
   const singleColumnWidth = 1190;
   const isSingleColumn = width <= singleColumnWidth;
+  const hasPosts = posts && posts.length > 0;
+  const hasFeatured = !!featured;
 
   const postsHeader = (
     <header className={styles.header}>
@@ -151,10 +153,16 @@ export function Articles() {
   const postList = (
     <div className={styles.list}>
       {!isSingleColumn && postsHeader}
-      {posts.map(({ slug, ...post }, index) => (
-        <ArticlesPost key={slug} slug={slug} index={index} {...post} />
-      ))}
-      {Array(2)
+      {hasPosts ? (
+        posts.map(({ slug, ...post }, index) => (
+          <ArticlesPost key={slug} slug={slug} index={index} {...post} />
+        ))
+      ) : (
+        <Text as="p" size="l" className={styles.emptyMessage}>
+          No articles yet. Check back soon!
+        </Text>
+      )}
+      {hasPosts && Array(2)
         .fill()
         .map((skeleton, index) => (
           <SkeletonPost key={index} index={index} />
@@ -162,7 +170,9 @@ export function Articles() {
     </div>
   );
 
-  const featuredPost = <ArticlesPost {...featured} />;
+  const featuredPost = hasFeatured ? (
+    <ArticlesPost {...featured} />
+  ) : null;
 
   return (
     <article className={styles.articles}>

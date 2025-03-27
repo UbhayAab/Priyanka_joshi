@@ -387,3 +387,9 @@
     animation: fade-in 0.8s var(--bezierFastoutSlowin) forwards 0.4s;
   }
 }
+
+.emptyMessage {
+  padding: var(--space4XL) 0;
+  text-align: center;
+  opacity: 0.6;
+}
